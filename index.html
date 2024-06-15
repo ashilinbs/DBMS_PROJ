@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="Ui.css">
+</head>
+<body>
+    <div id="center-content">
+        <fieldset id="field">
+            <div class="legend-container">
+                <p>Inventory Management</p>
+            </div>
+            <button onclick="redirectToLogin('admin')" class="butt">Login as Administrator</button>
+            <button onclick="redirectToLogin('customer')" class="butt">Login as Customer</button>
+        </fieldset>
+    </div>
+
+    <script>
+        function redirectToLogin(role) {
+            window.location.href = `/login.html?role=${role}`;
+        }
+    </script>
+</body>
+</html>

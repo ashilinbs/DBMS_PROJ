@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Stock Quantity</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            <!-- Product data will be inserted here dynamically -->
+        </tbody>
+    </table>
+    
+    <button id="viewReportBtn" class="btn">View Stock Report</button>
+    
+    <div id="reportTableContainer" style="display: none;">
+        <h2>Stock Report</h2>
+        <table id="reportTable">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Quantity Added</th>
+                    <th>Date Added</th>
+                </tr>
+            </thead>
+            <tbody id="reportTableBody">
+                <!-- Report data will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch and display product list
+        async function fetchProducts() {
+            try {
+                const response = await fetch('/fetch_products');
+                const products = await response.json();
+                const productTableBody = document.getElementById('productTableBody');
+                productTableBody.innerHTML = '';
+
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.product_id}</td>
+                        <td>${product.product_name}</td>
+                        <td>${product.price}</td>
+                        <td>${product.quantity}</td>
+                    `;
+                    productTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        // Fetch and display stock report
+        document.getElementById('viewReportBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch('/fetch_stock_report');
+                const data = await response.json();
+
+                const reportTableBody = document.getElementById('reportTableBody');
+                reportTableBody.innerHTML = ''; // Clear previous content
+
+                data.forEach(stock => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${stock.product_id}</td>
+                        <td>${stock.quantity}</td>
+                        <td>${new Date(stock.date_added).toLocaleDateString()}</td>
+                    `;
+                    reportTableBody.appendChild(row);
+                });
+
+                document.getElementById('reportTableContainer').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error fetching stock report:', error);
+                alert('Failed to fetch stock report. Please try again.');
+            }
+        });
+
+        // Fetch products on page load
+        fetchProducts();
+    </script>
+</body>
+</html>

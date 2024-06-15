@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Product Price</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link your CSS file here -->
+    <style>
+        /* Additional CSS for layout and styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            background-image: url('https://img.freepik.com/free-photo/elevated-view-beige-orange-cardboard-papers-corner-grey-background_23-2147878482.jpg?t=st=1718392754~exp=1718396354~hmac=210484a1f9fa74bf0a5971145fec0ff9c193e4c99fd7170e3298afdfefae42de&w=1060'); /* Background image URL */
+            background-size: cover;
+            background-position: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            input[type="text"], button[type="submit"] {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Product Price</h1>
+
+        <form id="updatePriceForm" onsubmit="updatePrice(event)">
+            <div class="form-group">
+                <label for="productId">Product ID:</label>
+                <input type="text" id="productId" name="productId" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="product_name" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="text" id="quantity" name="quantity" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="price">New Price:</label>
+                <input type="text" id="price" name="price" required>
+            </div>
+        
+            <button type="submit">Update Price</button>
+        </form>
+        
+        <script>
+            async function updatePrice(event) {
+                event.preventDefault(); // Prevent default form submission
+        
+                const productId = document.getElementById('productId').value;
+                const productName = document.getElementById('productName').value;
+                const quantity = document.getElementById('quantity').value;
+                const price = document.getElementById('price').value;
+        
+                try {
+                    const response = await fetch(`/api/stock/${productId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ product_name: productName, quantity, price })
+                    });
+        
+                    if (response.ok) {
+                        const updatedStockItem = await response.json();
+                        console.log('Updated stock item:', updatedStockItem);
+                        alert('Price updated successfully');
+                    } else {
+                        const errorMessage = await response.text();
+                        console.error('Update failed:', errorMessage);
+                        alert(`Failed to update price: ${errorMessage}`);
+                    }
+                } catch (error) {
+                    console.error('Error updating price:', error);
+                    alert('Error updating price');
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

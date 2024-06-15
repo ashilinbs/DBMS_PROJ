@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/free-vector/blurry-gray-background_1034-246.jpg?t=st=1718393865~exp=1718397465~hmac=65cf8fa4f00996e5c583b640b01c1c96c4a87ff8970e59a92313562face44e36&w=740'); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin-bottom: 10px;
+        }
+        input {
+            padding: 8px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 200px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .profile-logo {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .profile-logo img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+        }
+        .redirect-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .redirect-button a {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #28a745;
+            display: inline-block;
+        }
+        .redirect-button a:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-logo">
+            <img src="https://img.freepik.com/premium-photo/picture-man-with-white-background-man-s-head_745528-17082.jpg?w=740" alt="Profile Picture">
+        </div>
+
+        <h2>Place Order</h2>
+
+        <form id="orderForm">
+            <label for="customer_id">Customer ID:</label>
+            <input type="text" id="customer_id" name="customer_id" required><br><br>
+            
+            <label for="product_name">Product Name:</label>
+            <input type="text" id="product_name" name="product_name" required><br><br>
+            
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required><br><br>
+            
+            <button type="submit">Place Order</button>
+        </form>
+
+        <div class="redirect-button">
+            <a href="/view_orders.html">View Orders</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const requestData = {};
+            formData.forEach((value, key) => {
+                requestData[key] = value;
+            });
+
+            try {
+                const response = await fetch('http://localhost:5711/api/place_order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                console.log('Order placed successfully:', data);
+                alert('Order placed successfully!');
+                window.writeln(totalPrice);
+
+                // Redirect to the orders page after placing the order
+                window.location.href = '/view_orders.html';
+
+            } catch (error) {
+                console.error('Error placing order:', error);
+                alert('Failed to place order. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

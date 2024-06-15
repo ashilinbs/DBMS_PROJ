@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="adminstrator.css">
+</head>
+<body>
+    <div id="center-content">
+        <fieldset id="field">
+            <p>Inventory Management</p>
+            <p>Welcome Admin</p>
+            <img src="https://img.freepik.com/premium-photo/icon-button-man_665280-69540.jpg?w=740" id="admin" alt="Admin Profile Picture">
+            <div class="legend-container">
+                <button class="butt" onclick="viewStock()">Stock Details</button>
+                <button class="butt" onclick="viewSuppliers()">Supplier Details</button>
+                <button class="butt" onclick="viewCustomers()">Customer Details</button>
+                <button class="butt" onclick="viewOrders()">Order Details</button>
+            </div>
+        </fieldset>
+    </div>
+
+    <!-- JavaScript to handle button clicks -->
+    <script>
+        function viewStock() {
+            window.location.href = '/view_stock.html'; // Update with actual route
+        }
+
+        function viewSuppliers() {
+            window.location.href = '/view_suppliers.html'; // Update with actual route
+        }
+
+        function viewCustomers() {
+            window.location.href = '/view_customers.html'; // Update with actual route
+        }
+        function viewOrders() {
+            window.location.href = '/view_orders.html';
+        }
+    </script>
+</body>
+</html>

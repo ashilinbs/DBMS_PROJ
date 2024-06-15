@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="administrator.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/free-vector/blurry-gray-background_1034-246.jpg?t=st=1718393865~exp=1718397465~hmac=65cf8fa4f00996e5c583b640b01c1c96c4a87ff8970e59a92313562face44e36&w=740');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .profile-pic {
+            margin-bottom: 20px;
+        }
+        .profile-pic img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            object-fit: cover;
+        }
+        .welcome-message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .buttons button {
+            padding: 15px 30px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .buttons button:hover {
+            background-color: #0056b3;
+        }
+        .icon {
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-pic">
+            <img src="https://img.freepik.com/premium-photo/picture-man-with-white-background-man-s-head_745528-17082.jpg?w=740" alt="Profile Picture">
+        </div>
+
+        <div class="welcome-message">
+            Welcome, <span id="customerName">Customer</span>!
+        </div>
+
+        <div class="buttons">
+            <button onclick="window.location.href='view_stock_customer.html'">
+                <span class="icon">📦</span> View Stock
+            </button>
+            <button onclick="window.location.href='place_order.html'">
+                <span class="icon">🛒</span> Place Order
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Optionally, you can fetch customer details and update the welcome message dynamically
+        // Example: Replace "Customer" with actual customer name fetched from API
+        document.getElementById('customerName').textContent = 'Customer'; // Replace with actual customer name
+    </script>
+</body>
+</html>

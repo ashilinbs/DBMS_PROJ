@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details</title>
+    <link rel="stylesheet" href="administrator.css"> <!-- Link your CSS file here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/free-vector/blurred-light-background_1107-161.jpg?t=st=1718393287~exp=1718396887~hmac=7d40897e031552b61f46fc53253574d6e92d3f9a34d7c56eec990d173488f9f3&w=740'); /* Background image URL */
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            background-color: #f2f2f2; /* Light gray background for header */
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9; /* Alternate row background color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Details</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody id="customer-table-body">
+                <!-- Customer details will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        async function loadCustomerDetails() {
+            try {
+                const response = await fetch('/api/customers');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch customers');
+                }
+                const customers = await response.json();
+                const customerTableBody = document.getElementById('customer-table-body');
+
+                customers.forEach(customer => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${customer.customer_id}</td>
+                        <td>${customer.username}</td>
+                        <td>${customer.email}</td>
+                        <td>${customer.phone}</td>
+                    `;
+                    customerTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching customer details:', error);
+                alert('Failed to fetch customer details');
+            }
+        }
+        window.onload = loadCustomerDetails;
+    </script>
+</body>
+</html>

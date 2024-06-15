@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Stock</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link your CSS file here -->
+    <style>
+        /* Additional CSS for layout and styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            background-image: url('https://img.freepik.com/free-photo/elevated-view-beige-orange-cardboard-papers-corner-grey-background_23-2147878482.jpg?t=st=1718392754~exp=1718396354~hmac=210484a1f9fa74bf0a5971145fec0ff9c193e4c99fd7170e3298afdfefae42de&w=1060'); /* Background image URL */
+            background-size: cover;
+            background-position: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="button"] {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button[type="button"]:hover {
+            background-color: #c82333;
+        }
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            input[type="text"], button[type="button"] {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Stock</h1>
+
+        <form id="deleteStockForm">
+            <div class="form-group">
+                <label for="productId">Product ID:</label>
+                <input type="text" id="productId" name="product_id" required>
+            </div>
+
+            <button type="button" onclick="deleteStock()">Delete Stock</button>
+        </form>
+    </div>
+
+    <script>
+        async function deleteStock() {
+            const productId = document.getElementById('productId').value;
+
+            try {
+                const response = await fetch(`/api/stock/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('Stock item deleted successfully');
+                    // Optionally, you can redirect or refresh the page
+                    // window.location.reload(); // Reload the page
+                } else {
+                    alert('Failed to delete stock item');
+                }
+            } catch (error) {
+                console.error('Error deleting stock item:', error);
+            }
+        }
+    </script>
+</body>
+</html>

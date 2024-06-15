@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Stock</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional CSS for layout and styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            background-image: url('https://img.freepik.com/free-photo/abstract-luxury-soft-red-background-christmas-valentines-layout-design-studio-room-web-template-business-report-with-smooth-circle-gradient-color_1258-83005.jpg?t=st=1718392447~exp=1718396047~hmac=7d863bd8ad29dd49ff85702b6a6c59481e4be59a4c5eecd5a3046f140930c1c0&w=740'); /* Background image URL */
+            background-size: cover;
+            background-position: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .dashboard-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .dashboard-section button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        .stock-table {
+            margin-top: 20px;
+        }
+        #stockTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #stockTable th, #stockTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        #stockTable th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        #stockTable td {
+            background-color: #fff;
+        }
+        .stock-actions button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin: 2px;
+        }
+        .profile-icon {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .profile-icon img {
+            width: 100px; /* Adjust size as needed */
+            height: 100px; /* Adjust size as needed */
+            border-radius: 50%; /* Rounded shape for profile picture */
+            border: 2px solid #fff; /* White border around profile picture */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .dashboard-section button {
+                font-size: 14px;
+            }
+            #stockTable th, #stockTable td {
+                font-size: 14px;
+                padding: 6px;
+            }
+            .stock-actions button {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .profile-icon img {
+                width: 80px; /* Adjust size for smaller screens */
+                height: 80px; /* Adjust size for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-icon">
+            <img src="https://img.freepik.com/premium-photo/cat-illustration-minimalist_7023-461307.jpg?w=740" alt="Profile Picture"> <!-- Profile picture -->
+        </div>
+
+        <h1>View Stock</h1>
+
+        <div class="dashboard-section">
+            <button onclick="location.href='/add_stock_form.html';">Add Stock</button>
+            <button onclick="location.href='/update_price_form.html';">Update Price</button>
+            <button onclick="location.href='/delete_stock_form.html';">Delete Stock</button>
+        </div>
+
+        <div class="stock-table">
+            <table id="stockTable">
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="stockTableBody">
+                    <!-- Stock items will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Fetch stock data and populate the table
+        async function fetchStockData() {
+            try {
+                const response = await fetch('/api/stock');
+                const stockData = await response.json();
+    
+                const stockTableBody = document.getElementById('stockTableBody');
+    
+                stockTableBody.innerHTML = '';
+    
+                stockData.forEach(stock => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${stock.product_id}</td>
+                        <td>${stock.product_name}</td>
+                        <td>${stock.quantity}</td>
+                        <td>${parseFloat(stock.price).toFixed(2)}</td>
+                        <td class="stock-actions">
+                            <button onclick="updateStock(${stock.product_id})">Update</button>
+                            <button onclick="deleteStock(${stock.product_id})">Delete</button>
+                        </td>
+                    `;
+                    stockTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching stock data:', error);
+            }
+        }
+    
+        // Function to delete stock item
+        async function deleteStock(productId) {
+            try {
+                const response = await fetch(`/api/stock/${productId}`, {
+                    method: 'DELETE'
+                });
+    
+                if (response.ok) {
+                    alert('Stock item deleted successfully');
+                    fetchStockData();
+                } else {
+                    alert('Failed to delete stock item');
+                }
+            } catch (error) {
+                console.error('Error deleting stock item:', error);
+            }
+        }
+    
+        // Initial fetch of stock data
+        fetchStockData();
+    </script>
+</body>
+</html>
